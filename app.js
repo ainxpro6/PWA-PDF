@@ -173,6 +173,33 @@ btnBack.addEventListener('click', () => {
 });
 
 // ==========================================
+// FITUR DARK MODE (MODE MALAM)
+// ==========================================
+const btnTheme = document.getElementById('btn-theme');
+
+// 1. Cek apakah sebelumnya pengguna memakai Dark Mode (dari LocalStorage)
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    btnTheme.textContent = '☀️'; // Ganti ikon ke matahari
+}
+
+// 2. Logika saat tombol ditekan
+btnTheme.addEventListener('click', () => {
+    // Toggle class 'dark-mode' pada elemen body
+    document.body.classList.toggle('dark-mode');
+    
+    // Cek apakah mode malam sedang aktif atau tidak
+    if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark'); // Simpan setelan
+        btnTheme.textContent = '☀️'; 
+    } else {
+        localStorage.setItem('theme', 'light'); // Simpan setelan
+        btnTheme.textContent = '🌙'; 
+    }
+});
+
+// ==========================================
 // REGISTRASI SERVICE WORKER UNTUK PWA
 // ==========================================
 if ('serviceWorker' in navigator) {
