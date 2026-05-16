@@ -52,6 +52,7 @@ button:hover { background: #2980b9; }
 
 .file-item:hover { border-color: #3498db; }
 
+/* Tampilan Reader & Navigasi Bawah */
 .controls {
     display: flex;
     flex-wrap: wrap; 
@@ -60,9 +61,7 @@ button:hover { background: #2980b9; }
     gap: 10px;
     background: #fff;
     padding: 10px;
-    
     box-shadow: 0 -2px 10px rgba(0,0,0,0.15); 
-    
     position: fixed;
     bottom: 0;
     left: 0;
@@ -72,22 +71,27 @@ button:hover { background: #2980b9; }
 
 .canvas-container {
     display: flex;
-    flex-direction: column; /* Membuat konten memanjang ke bawah */
+    flex-direction: column;
     align-items: center;
-    gap: 15px; /* Jarak antar halaman */
+    gap: 15px;
     padding: 20px;
-    background: #525659; /* Warna latar gelap ala PDF reader */
-    height: calc(100vh - 120px); /* Batasi tinggi agar bisa di-scroll */
-    overflow-y: auto; /* Aktifkan vertical scroll */
+    background: #525659;
+    height: calc(100vh - 120px);
+    overflow-y: auto; 
 }
 
+/* =========================================
+   PERBAIKAN 1: TAMPILAN CANVAS DI PC
+   ========================================= */
 canvas {
     max-width: 100%;
+    width: auto; /* Kunci agar tidak membesar di PC */
+    height: auto;
+    margin: 0 auto; /* Posisi di tengah */
     box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    background-color: white; /* Beri warna putih agar halaman PDF jelas */
+    background-color: white; 
 }
 
-/* Matikan tombol jika tidak ada chapter lagi */
 button:disabled {
     background: #95a5a6;
     cursor: not-allowed;
@@ -96,30 +100,25 @@ button:disabled {
 /* =========================================
    IMMERSIVE MODE (BACA FULL SCREEN)
    ========================================= */
-
-/* Menyembunyikan header saat mode membaca aktif */
-body.reading-mode header {
+body.reading-mode header,
+body.reading-mode .controls {
     display: none !important;
 }
 
-/* Memperluas area canvas saat header hilang agar tidak ada ruang kosong di bawah */
 body.reading-mode .canvas-container {
-    /* 60px adalah estimasi tinggi bar .controls (Prev/Next Chapter) */
-    height: calc(100vh - 60px); 
+    height: 100vh !important; 
 }
 
 /* =========================================
    STATUS SUDAH DIBACA (READ INDICATOR)
    ========================================= */
-
 .file-item.is-read {
-    background-color: #e8ecef; /* Warna latar sedikit lebih gelap/abu-abu */
-    color: #7f8c8d; /* Warna teks menjadi abu-abu */
+    background-color: #e8ecef;
+    color: #7f8c8d;
     border-color: transparent;
     opacity: 0.8;
 }
 
-/* Menambahkan ikon centang setelah teks pada chapter yang sudah dibaca */
 .file-item.is-read::after {
     content: ' ✔️';
     font-size: 0.9em;
@@ -129,7 +128,7 @@ body.reading-mode .canvas-container {
    BAR PENCARIAN
    ========================================= */
 .search-container {
-    padding: 15px 15px 0 15px; /* Jarak agar tidak menempel dengan file list */
+    padding: 15px 15px 0 15px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -137,16 +136,15 @@ body.reading-mode .canvas-container {
 
 #search-box {
     width: 100%;
-    max-width: 500px; /* Lebar maksimal di PC */
+    max-width: 500px;
     padding: 12px 20px;
     border: 2px solid #bdc3c7;
-    border-radius: 25px; /* Membuat ujungnya membulat (kapsul) */
+    border-radius: 25px;
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;
 }
 
-/* Warna pinggiran berubah biru saat kotak diklik/diketik */
 #search-box:focus {
     border-color: #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
@@ -155,79 +153,61 @@ body.reading-mode .canvas-container {
 /* =========================================
    OPTIMASI KHUSUS HP (MEDIA QUERY)
    ========================================= */
-
-/* Aturan ini hanya berlaku jika lebar layar di bawah 600px */
 @media (max-width: 600px) {
     
-    /* 1. Membuat Header List Novel sedikit lebih ringkas */
     header {
         padding: 10px;
     }
+    
     header h2 {
-        font-size: 1.1rem; /* Teks "Novel Reader" diperkecil */
+        font-size: 1.1rem; 
     }
 
-    /* 2. Mengecilkan Kontrol Navigasi (Prev, Judul, Next) */
     .controls {
-        padding: 5px; /* Mengurangi padding bar navigasi */
-        gap: 5px; /* Merapatkan jarak antar elemen */
-        justify-content: space-between; /* Membuat elemen menyebar ke pinggir */
+        padding: 5px; 
+        gap: 5px; 
+        justify-content: space-between; 
     }
 
-    /* Mengecilkan teks Judul Chapter di tengah */
     #chapter-title {
         font-size: 13px;
         font-weight: bold;
-        flex-grow: 0; /* Jangan biarkan mengambil ruang berlebih */
+        flex-grow: 0; 
         text-align: center;
-        max-width: 40%; /* Batasi lebar judul agar tidak menabrak tombol */
-        white-space: nowrap; /* Teks 1 baris */
-        overflow: hidden; /* Sembunyikan jika kepanjangan */
-        text-overflow: ellipsis; /* Tambah titik-titik (...) jika terpotong */
+        max-width: 40%; 
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
     }
 
-    /* Mengecilkan tombol Prev dan Next */
     .controls button {
-        padding: 6px 10px; /* Padding tombol lebih kecil */
-        font-size: 11px; /* Ukuran font teks tombol dikecilkan */
+        padding: 6px 10px; 
+        font-size: 11px; 
         border-radius: 4px;
-        flex: 0 0 auto; /* Ukuran tombol tetap */
+        flex: 0 0 auto; 
     }
 
-    /* 3. Membuat PDF Menjadi Full Layar (Hapus border abu-abu) */
     .canvas-container {
-        /* SEBELUMNYA: padding: 0; */
-        /* SEKARANG: Beri padding tipis HANYA di Kiri & Kanan (misal 10px atau 8px) */
-        padding: 0 10px; 
-        
-        gap: 0; /* Tetap hapus jarak antar halaman PDF agar menyambung vertikal */
-        background: #fff; /* Latar tetap putih agar menyatu dengan margin baru */
-        
-        /* Tinggi disesuaikan dengan bar kontrol di bawah */
-        height: calc(100vh - 60px); /* 60px estimasi tinggi navigasi bawah */
+        padding: 0; 
+        gap: 0; 
+        background: #fff; 
+        height: calc(100vh - 60px); 
         width: 100%;
-        overflow-x: hidden; /* Pengaman agar tidak ada scroll horizontal */
+        overflow-x: hidden; 
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
     }
 
-    /* Memastikan Canvas PDF menyesuaikan dengan padding container */
+    /* =========================================
+       PERBAIKAN 2: ZOOM MARGIN HANYA DI HP
+       ========================================= */
     canvas {
-        /* SEBELUMNYA: width: 100% !important; */
-        /* SEKARANG: Gunakan max-width agar menghormati padding container */
-        max-width: 100% !important; 
-        width: auto !important; /* Biarkan pdf.js mengatur lebarnya secara otomatis */
-        
-        height: auto !important; /* Jaga proporsi tinggi asli PDF */
-        margin: 0 auto; /* Tengah-tengah secara horizontal */
-        box-shadow: none; /* Tetap hapus bayangan agar bersih */
-        border: none; /* Hapus border */
-    }
-
-    /* Sesuaikan Immersive Mode (saat header hilang) agar full layar */
-    body.reading-mode header,
-    body.reading-mode .controls {
-    display: none !important;
-    }
-    body.reading-mode .canvas-container {
-    height: 100vh !important; 
+        width: 110% !important; 
+        max-width: none !important; 
+        height: auto !important;
+        margin: 0; 
+        box-shadow: none; 
+        border: none; 
     }
 }
