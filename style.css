@@ -67,13 +67,82 @@ button:hover { background: #2980b9; }
 
 .canvas-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Membuat konten memanjang ke bawah */
+    align-items: center;
+    gap: 15px; /* Jarak antar halaman */
     padding: 20px;
-    overflow: auto;
+    background: #525659; /* Warna latar gelap ala PDF reader */
+    height: calc(100vh - 120px); /* Batasi tinggi agar bisa di-scroll */
+    overflow-y: auto; /* Aktifkan vertical scroll */
 }
 
 canvas {
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     max-width: 100%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    background-color: white; /* Beri warna putih agar halaman PDF jelas */
+}
+
+/* Matikan tombol jika tidak ada chapter lagi */
+button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   IMMERSIVE MODE (BACA FULL SCREEN)
+   ========================================= */
+
+/* Menyembunyikan header saat mode membaca aktif */
+body.reading-mode header {
+    display: none !important;
+}
+
+/* Memperluas area canvas saat header hilang agar tidak ada ruang kosong di bawah */
+body.reading-mode .canvas-container {
+    /* 60px adalah estimasi tinggi bar .controls (Prev/Next Chapter) */
+    height: calc(100vh - 60px); 
+}
+
+/* =========================================
+   STATUS SUDAH DIBACA (READ INDICATOR)
+   ========================================= */
+
+.file-item.is-read {
+    background-color: #e8ecef; /* Warna latar sedikit lebih gelap/abu-abu */
+    color: #7f8c8d; /* Warna teks menjadi abu-abu */
+    border-color: transparent;
+    opacity: 0.8;
+}
+
+/* Menambahkan ikon centang setelah teks pada chapter yang sudah dibaca */
+.file-item.is-read::after {
+    content: ' ✔️';
+    font-size: 0.9em;
+}
+
+/* =========================================
+   BAR PENCARIAN
+   ========================================= */
+.search-container {
+    padding: 15px 15px 0 15px; /* Jarak agar tidak menempel dengan file list */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#search-box {
+    width: 100%;
+    max-width: 500px; /* Lebar maksimal di PC */
+    padding: 12px 20px;
+    border: 2px solid #bdc3c7;
+    border-radius: 25px; /* Membuat ujungnya membulat (kapsul) */
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Warna pinggiran berubah biru saat kotak diklik/diketik */
+#search-box:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }

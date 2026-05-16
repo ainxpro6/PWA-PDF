@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA Novel Reader</title>
+    <title>Novel Reader</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json"> <!-- Untuk PWA -->
     
@@ -19,21 +19,25 @@
 
     <!-- Tampilan Daftar File/Folder -->
     <main id="library-view">
+        <div id="search-container" class="search-container" style="display: none;">
+            <input type="text" id="search-box" placeholder="🔍 Cari chapter...">
+        </div>
+
         <div id="file-list" class="grid-container">
-            <p>Silakan pilih folder yang berisi file PDF novel.</p>
+            <p>Buka folder PDF novel.</p>
         </div>
     </main>
 
     <!-- Tampilan Membaca -->
     <main id="reader-view" style="display:none;">
         <div class="controls">
-            <button id="prev-btn">◀ Previous</button>
-            <span id="page-info">Hal <span id="page-num">0</span> / <span id="page-count">0</span></span>
-            <button id="next-btn">Next ▶</button>
+            <button id="prev-btn">◀ Prev Chapter</button>
+            <span id="page-info"><strong id="chapter-title">Judul Chapter</strong></span>
+            <button id="next-btn">Next Chapter ▶</button>
         </div>
-        <div class="canvas-container">
-            <canvas id="pdf-render"></canvas>
-        </div>
+        
+        <div id="pdf-container" class="canvas-container">
+            </div>
     </main>
 
     <!-- Inisialisasi worker pdf.js -->
