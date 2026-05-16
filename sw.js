@@ -1,4 +1,4 @@
-const CACHE_NAME = 'novel-reader-cache-v1';
+const CACHE_NAME = 'novel-reader-cache-v2';
 
 // Daftar file yang akan disimpan di memori perangkat
 const ASSETS_TO_CACHE = [
