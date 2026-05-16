@@ -196,21 +196,30 @@ body.reading-mode .canvas-container {
 
     /* 3. Membuat PDF Menjadi Full Layar (Hapus border abu-abu) */
     .canvas-container {
-        padding: 0; /* HAPUS PADDING total agar canvas mentok ke pinggir */
-        gap: 0; /* Hapus jarak antar halaman PDF agar menyambung */
-        background: #fff; /* Ubah background abu-abu menjadi putih agar menyatu dengan PDF */
+        /* SEBELUMNYA: padding: 0; */
+        /* SEKARANG: Beri padding tipis HANYA di Kiri & Kanan (misal 10px atau 8px) */
+        padding: 0 10px; 
         
-        /* Pastikan tinggi container disesuaikan dengan bar kontrol yang baru */
-        height: calc(100vh - 100px); /* Estimasi tinggi setelah kontrol dikecilkan */
+        gap: 0; /* Tetap hapus jarak antar halaman PDF agar menyambung vertikal */
+        background: #fff; /* Latar tetap putih agar menyatu dengan margin baru */
+        
+        /* Tinggi disesuaikan dengan bar kontrol di bawah */
+        height: calc(100vh - 60px); /* 60px estimasi tinggi navigasi bawah */
+        width: 100%;
+        overflow-x: hidden; /* Pengaman agar tidak ada scroll horizontal */
     }
 
-    /* Memastikan Canvas PDF benar-benar mentok kiri-kanan */
+    /* Memastikan Canvas PDF menyesuaikan dengan padding container */
     canvas {
-        width: 100% !important; /* Paksa lebar canvas 100% layar */
-        height: auto !important; /* Jaga proporsi tinggi */
-        margin: 0; /* Hapus margin */
-        box-shadow: none; /* Hapus bayangan agar terlihat flat full screen */
-        border: none; /* Hapus border (jika ada) */
+        /* SEBELUMNYA: width: 100% !important; */
+        /* SEKARANG: Gunakan max-width agar menghormati padding container */
+        max-width: 100% !important; 
+        width: auto !important; /* Biarkan pdf.js mengatur lebarnya secara otomatis */
+        
+        height: auto !important; /* Jaga proporsi tinggi asli PDF */
+        margin: 0 auto; /* Tengah-tengah secara horizontal */
+        box-shadow: none; /* Tetap hapus bayangan agar bersih */
+        border: none; /* Hapus border */
     }
 
     /* Sesuaikan Immersive Mode (saat header hilang) agar full layar */
