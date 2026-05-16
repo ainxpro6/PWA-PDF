@@ -259,3 +259,36 @@ body.dark-mode #search-box {
         border: none; 
     }
 }
+
+/* =========================================
+   FLOATING ACTION BUTTON (CONTINUE READING)
+   ========================================= */
+.fab-continue {
+    position: fixed;
+    bottom: 30px; /* Jarak dari bawah layar */
+    right: 30px;  /* Jarak dari kanan layar */
+    background: #2ecc71; /* Warna hijau segar penanda aksi */
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 50px; /* Bentuk kapsul yang modern */
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 99; /* Berada di atas elemen daftar */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fab-continue:hover {
+    background: #27ae60;
+    transform: scale(1.05); /* Efek membesar sedikit saat disentuh/hover */
+}
+
+/* Otomatis sembunyikan tombol ini jika Immersive Mode (mode membaca) aktif */
+body.reading-mode .fab-continue {
+    display: none !important;
+}

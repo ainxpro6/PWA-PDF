@@ -9,6 +9,7 @@ const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 const searchContainer = document.getElementById('search-container');
 const searchBox = document.getElementById('search-box');
+const btnContinue = document.getElementById('btn-continue');
 
 let currentFiles = []; 
 let currentChapterIndex = -1; 
@@ -52,8 +53,10 @@ btnSelect.addEventListener('click', async () => {
         // BARU: Munculkan bar pencarian jika file berhasil diload
         if(currentFiles.length > 0) {
             searchContainer.style.display = 'flex'; 
-            searchBox.value = ''; // Kosongkan ketikan sebelumnya (jika ada)
+            searchBox.value = ''; 
         }
+		
+		cekTombolLanjutkan();
 
     } catch (e) {
         console.error('Batal memilih folder:', e);
@@ -94,10 +97,18 @@ async function bukaChapter(index) {
             fileList.children[index].classList.add('is-read');
         }
     }
+	
+	localStorage.setItem(`last_index_${currentDirName}`, index);
+    btnContinue.style.display = 'none';
     
     // Update Judul UI
     const judul = fileHandle.name.replace('.pdf', '');
     chapterTitle.textContent = judul;
+	
+	if (readerView.style.display !== 'block') {
+        // Tambahkan riwayat palsu '#reader' ke sistem HP
+        history.pushState({ page: 'reader' }, null, '#reader');
+    }
     
     // Persiapan UI
     libraryView.style.display = 'none';
@@ -169,7 +180,8 @@ btnBack.addEventListener('click', () => {
     readerView.style.display = 'none';
     btnBack.style.display = 'none';
     btnSelect.style.display = 'inline-block';
-    pdfContainer.innerHTML = ''; // Bersihkan memori canvas
+    pdfContainer.innerHTML = '';
+	history.back();
 });
 
 // ==========================================
@@ -196,6 +208,28 @@ btnTheme.addEventListener('click', () => {
     } else {
         localStorage.setItem('theme', 'light'); // Simpan setelan
         btnTheme.textContent = '🌙'; 
+    }
+});
+
+// ==========================================
+// PENANGANAN TOMBOL BACK FISIK HP / BROWSER
+// ==========================================
+window.addEventListener('popstate', (event) => {
+    // Jika state kosong (artinya kita kembali ke index.html utama, bukan #reader)
+    if (!event.state || event.state.page !== 'reader') {
+        
+        // Kembalikan tampilan ke Library Menu
+        libraryView.style.display = 'block';
+        readerView.style.display = 'none';
+        btnBack.style.display = 'none';
+        btnSelect.style.display = 'inline-block';
+        
+        // Bersihkan memori render canvas PDF
+        pdfContainer.innerHTML = ''; 
+        
+        // Jika sedang mode full screen (Immersive Mode), matikan
+        document.body.classList.remove('reading-mode');
+		cekTombolLanjutkan();
     }
 });
 
@@ -260,3 +294,19 @@ searchBox.addEventListener('input', (e) => {
         }
     });
 });
+
+// Fungsi mengecek dan menampilkan tombol Lanjutkan Membaca
+function cekTombolLanjutkan() {
+    const lastIndex = localStorage.getItem(`last_index_${currentDirName}`);
+    
+    // Munculkan tombol HANYA jika kita berada di tampilan daftar (Library) 
+    // DAN ada riwayat chapter terakhir yang valid
+    if (libraryView.style.display !== 'none' && lastIndex !== null && currentFiles[lastIndex]) {
+        btnContinue.style.display = 'flex';
+        
+        // Saat diklik, langsung buka chapter berdasarkan indeks yang disimpan
+        btnContinue.onclick = () => bukaChapter(parseInt(lastIndex));
+    } else {
+        btnContinue.style.display = 'none';
+    }
+}
