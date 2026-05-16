@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Novel Reader</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json"> <!-- Untuk PWA -->
+    
+    <!-- Load pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <header>
+        <h2>📚 Novel Reader</h2>
+        <button id="btn-select-folder">Pilih Folder Novel</button>
+        <button id="btn-back" style="display:none;">⬅ Kembali ke Daftar</button>
+    </header>
+
+    <!-- Tampilan Daftar File/Folder -->
+    <main id="library-view">
+        <div id="file-list" class="grid-container">
+            <p>Silakan pilih folder yang berisi file PDF novel.</p>
+        </div>
+    </main>
+
+    <!-- Tampilan Membaca -->
+    <main id="reader-view" style="display:none;">
+        <div class="controls">
+            <button id="prev-btn">◀ Previous</button>
+            <span id="page-info">Hal <span id="page-num">0</span> / <span id="page-count">0</span></span>
+            <button id="next-btn">Next ▶</button>
+        </div>
+        <div class="canvas-container">
+            <canvas id="pdf-render"></canvas>
+        </div>
+    </main>
+
+    <!-- Inisialisasi worker pdf.js -->
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
