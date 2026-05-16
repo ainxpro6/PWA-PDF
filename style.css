@@ -146,3 +146,71 @@ body.reading-mode .canvas-container {
     border-color: #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
+
+/* =========================================
+   OPTIMASI KHUSUS HP (MEDIA QUERY)
+   ========================================= */
+
+/* Aturan ini hanya berlaku jika lebar layar di bawah 600px */
+@media (max-width: 600px) {
+    
+    /* 1. Membuat Header List Novel sedikit lebih ringkas */
+    header {
+        padding: 10px;
+    }
+    header h2 {
+        font-size: 1.1rem; /* Teks "Novel Reader" diperkecil */
+    }
+
+    /* 2. Mengecilkan Kontrol Navigasi (Prev, Judul, Next) */
+    .controls {
+        padding: 5px; /* Mengurangi padding bar navigasi */
+        gap: 5px; /* Merapatkan jarak antar elemen */
+        justify-content: space-between; /* Membuat elemen menyebar ke pinggir */
+    }
+
+    /* Mengecilkan teks Judul Chapter di tengah */
+    #chapter-title {
+        font-size: 13px;
+        font-weight: bold;
+        flex-grow: 0; /* Jangan biarkan mengambil ruang berlebih */
+        text-align: center;
+        max-width: 40%; /* Batasi lebar judul agar tidak menabrak tombol */
+        white-space: nowrap; /* Teks 1 baris */
+        overflow: hidden; /* Sembunyikan jika kepanjangan */
+        text-overflow: ellipsis; /* Tambah titik-titik (...) jika terpotong */
+    }
+
+    /* Mengecilkan tombol Prev dan Next */
+    .controls button {
+        padding: 6px 10px; /* Padding tombol lebih kecil */
+        font-size: 11px; /* Ukuran font teks tombol dikecilkan */
+        border-radius: 4px;
+        flex: 0 0 auto; /* Ukuran tombol tetap */
+    }
+
+    /* 3. Membuat PDF Menjadi Full Layar (Hapus border abu-abu) */
+    .canvas-container {
+        padding: 0; /* HAPUS PADDING total agar canvas mentok ke pinggir */
+        gap: 0; /* Hapus jarak antar halaman PDF agar menyambung */
+        background: #fff; /* Ubah background abu-abu menjadi putih agar menyatu dengan PDF */
+        
+        /* Pastikan tinggi container disesuaikan dengan bar kontrol yang baru */
+        height: calc(100vh - 100px); /* Estimasi tinggi setelah kontrol dikecilkan */
+    }
+
+    /* Memastikan Canvas PDF benar-benar mentok kiri-kanan */
+    canvas {
+        width: 100% !important; /* Paksa lebar canvas 100% layar */
+        height: auto !important; /* Jaga proporsi tinggi */
+        margin: 0; /* Hapus margin */
+        box-shadow: none; /* Hapus bayangan agar terlihat flat full screen */
+        border: none; /* Hapus border (jika ada) */
+    }
+
+    /* Sesuaikan Immersive Mode (saat header hilang) agar full layar */
+    body.reading-mode .canvas-container {
+        /* 45px estimasi tinggi bar kontrol baru yang kecil */
+        height: calc(100vh - 45px); 
+    }
+}
